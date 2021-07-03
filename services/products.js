@@ -6,8 +6,8 @@ class ProductsService {
     this.mongoDB = new MongoLib();
   }
 
-  async getProducts() {
-    const Products = await this.mongoDB.getAll(this.collection);
+  async getProducts({ page }) {
+    const Products = await this.mongoDB.getPaginated(this.collection, page);
     return Products || [];
   }
 

@@ -6,9 +6,8 @@ const jwt = require('jsonwebtoken');
 const ApiKeysService = require('../services/apiKeys');
 const UsersService = require('../services/users');
 
-const validationHandler = require('../utils/middleware/validationHandler');
-
 const { createUserSchema } = require('../utils/schemas/users');
+const validationHandler = require('../utils/middleware/validationHandler');
 
 const { config } = require('../config');
 

@@ -2,11 +2,15 @@ const express = require('express');
 const passport = require('passport');
 const ProductsService = require('../services/products');
 
-const { productIdSchema, createProductSchema, updateProductSchema } = require('../utils/schemas/products');
-
+const {
+  productIdSchema,
+  createProductSchema,
+  updateProductSchema,
+  productPageSchema,
+} = require('../utils/schemas/products');
 const validationHandler = require('../utils/middleware/validationHandler');
-const scopesValidationHandler = require('../utils/middleware/scopesValidationHandler');
 
+const scopesValidationHandler = require('../utils/middleware/scopesValidationHandler');
 
 // JWT strategy
 require('../utils/auth/strategies/jwt');
@@ -17,13 +21,16 @@ function productsApi(app) {
 
   const productsService = new ProductsService();
 
-  router.get('/',
+  router.get(
+    '/',
     passport.authenticate('jwt', { session: false }),
     scopesValidationHandler(['read:products']),
+    validationHandler(productPageSchema, 'query'),
     async function (req, res, next) {
+      const { page } = req.query;
 
       try {
-        const products = await productsService.getProducts();
+        const products = await productsService.getProducts({ page });
 
         res.status(200).json({
           data: products,
@@ -32,10 +39,11 @@ function productsApi(app) {
       } catch (err) {
         next(err);
       }
-    }
+    },
   );
 
-  router.get('/:productId',
+  router.get(
+    '/:productId',
     passport.authenticate('jwt', { session: false }),
     scopesValidationHandler(['read:products']),
     validationHandler(productIdSchema, 'params'),
@@ -52,10 +60,11 @@ function productsApi(app) {
       } catch (err) {
         next(err);
       }
-    }
+    },
   );
 
-  router.post('/',
+  router.post(
+    '/',
     passport.authenticate('jwt', { session: false }),
     scopesValidationHandler(['create:products']),
     validationHandler(createProductSchema),
@@ -71,14 +80,15 @@ function productsApi(app) {
       } catch (err) {
         next(err);
       }
-    }
+    },
   );
 
-  router.put('/:productId',
+  router.put(
+    '/:productId',
     passport.authenticate('jwt', { session: false }),
     scopesValidationHandler(['update:products']),
     validationHandler(updateProductSchema),
-    validationHandler(productIdSchema , 'params'),
+    validationHandler(productIdSchema, 'params'),
     async function (req, res, next) {
       const { productId } = req.params;
       const { body: product } = req;
@@ -96,10 +106,11 @@ function productsApi(app) {
       } catch (err) {
         next(err);
       }
-    }
+    },
   );
 
-  router.delete('/:productId',
+  router.delete(
+    '/:productId',
     passport.authenticate('jwt', { session: false }),
     scopesValidationHandler(['delete:products']),
     validationHandler(productIdSchema, 'params'),
@@ -116,7 +127,7 @@ function productsApi(app) {
       } catch (err) {
         next(err);
       }
-    }
+    },
   );
 }
 

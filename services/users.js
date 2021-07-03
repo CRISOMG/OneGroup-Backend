@@ -19,21 +19,10 @@ class UsersService {
     const createUserId = await this.mongoDB.create(this.collection, {
       name,
       email,
-      password: hashedPassword
+      password: hashedPassword,
     });
 
     return createUserId;
-  }
-
-  async getOrCreateUser({ user }) {
-    const queriedUser = await this.getUser({ email: user.email });
-
-    if (queriedUser) {
-      return queriedUser;
-    }
-
-    await this.createUser({ user });
-    return await this.getUser({ email: user.email });
   }
 }
 
