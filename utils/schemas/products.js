@@ -9,14 +9,14 @@ const productPageSchema = joi.object({
 });
 
 const createProductSchema = joi.object({
-  image: joi.string().uri().required(),
+  image: joi.string().required(),
   name: joi.string().required(),
   price: joi.number().integer().required(),
   review: joi.number().max(5).required(),
 });
 
 const updateProductSchema = joi.object({
-  image: joi.string().uri(),
+  image: joi.string(),
   name: joi.string(),
   price: joi.number().integer(),
   review: joi.number().max(5),

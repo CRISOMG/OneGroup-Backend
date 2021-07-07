@@ -15,6 +15,12 @@ const notFoundHandler = require('./utils/middleware/notFoundHandler');
 app.use(express.json());
 app.use(helmet());
 
+// Basic strategy
+require('./utils/auth/strategies/basic');
+
+// JWT strategy
+require('./utils/auth/strategies/jwt');
+
 // routes
 authApi(app);
 productsApi(app);

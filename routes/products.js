@@ -12,9 +12,10 @@ const validationHandler = require('../utils/middleware/validationHandler');
 
 const scopesValidationHandler = require('../utils/middleware/scopesValidationHandler');
 
-// JWT strategy
-require('../utils/auth/strategies/jwt');
-
+/**
+ *
+ * @param {express.Application} app
+ */
 function productsApi(app) {
   const router = express.Router();
   app.use('/api/products', router);

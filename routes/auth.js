@@ -11,15 +11,24 @@ const validationHandler = require('../utils/middleware/validationHandler');
 
 const { config } = require('../config');
 
-// Basic strategy
-require('../utils/auth/strategies/basic');
-
+/**
+ *
+ * @param {express.Application} app
+ */
 function authApi(app) {
   const router = express.Router();
   app.use('/api/auth', router);
 
   const apiKeysService = new ApiKeysService();
   const usersService = new UsersService();
+
+  router.get('/user', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
+    try {
+      res.status(200).json(req.user);
+    } catch (error) {
+      next(error);
+    }
+  });
 
   router.post('/sign-in', async (req, res, next) => {
     const { apiKeyToken } = req.body;
@@ -31,18 +40,18 @@ function authApi(app) {
     passport.authenticate('basic', function (error, user) {
       try {
         if (error || !user) {
-          next(boom.unauthorized());
+          return next(boom.unauthorized());
         }
 
         req.login(user, { session: false }, async function (error) {
           if (error) {
-            next(error);
+            return next(error);
           }
 
           const apiKey = await apiKeysService.getApiKey({ token: apiKeyToken });
 
           if (!apiKey) {
-            next(boom.unauthorized());
+            return next(boom.unauthorized());
           }
 
           const { _id: id, name, email } = user;
