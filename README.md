@@ -24,7 +24,17 @@ PUBLIC_API_KEY_TOKEN=
 ```
 
 **AUTH_JWT_SECRET** & **ADMIN_API_KEY_TOKEN** & **PUBLIC_API_KEY_TOKEN** \
-Deben ser un 'SHA 256-bit Key' diferentes, recomiendo [keygen.io](https://keygen.io/) para generar estas keys.
+Deben ser un **SHA 256-bit Key** diferentes, recomiendo [keygen.io](https://keygen.io/) para generar estas keys.
+
+### MongoDB Setup
+
+Debe tener instalado [MongoDB](https://docs.mongodb.com/manual/) en su equipo para ejecutar el entorno en modo de desarrollo. [Install MongoDB Community Edition](https://docs.mongodb.com/manual/administration/install-community/)
+
+Si va a ejecutar el entorno en modo para produccion debe haber configurado un Cluster en MongoDB Atlas de donde extraerá las credenciales "DB_USER", "DB_PASSWORD" Y "DB_HOST".
+
+[MongoDB Atlas](https://docs.atlas.mongodb.com/) \
+[Get Started with Atlas](https://docs.atlas.mongodb.com/getting-started/) \
+[Connect to Your Cluster](https://docs.atlas.mongodb.com/tutorial/connect-to-your-cluster/)
 
 ### MongoDB Credentials
 
@@ -41,15 +51,18 @@ const MONGO_URI = config.dev
   : `mongodb+srv://${USER}:${PASSWORD}@${DB_HOST}/${DB_NAME}?retryWrites=true&w=majority`;
 ```
 
-El USER y PASSWORD se codifican para ser componente de una uri.
+El USER y PASSWORD se codifican para ser componentes de la mongodb uri.
 
-Si se esta en un entorno de desarrollo se usa una coneccion a un cluster local de mongodb, de lo contrario se usa una coneccion 'mongodb+src' al cluster de mongodb atlas
+Si se esta en un entorno de desarrollo se usa una conexión local de mongodb, de lo contrario se usa una conexión 'mongodb+srv' al cluster de mongodb atlas.
 
 ### Build Setup
 
 ```bash
 # install dependencies
 $ yarn install
+
+# seed api keys to mongodb with scopes array
+$ yarn seed
 
 # server in development mode at localhost:8080
 $ yarn dev

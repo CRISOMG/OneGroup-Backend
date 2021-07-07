@@ -1,9 +1,16 @@
 const MongoLib = require('../lib/mongo');
 const { adminApiKeyToken, publicApiKeyToken } = require('../config').config;
 
-const adminScopes = ['signin:auth', 'signup:auth', 'create:movies', 'read:movies', 'update:movies', 'delete:movies'];
+const adminScopes = [
+  'signin:auth',
+  'signup:auth',
+  'create:products',
+  'read:products',
+  'update:products',
+  'delete:products',
+];
 
-const publicScopes = ['signin:auth', 'signup:auth', 'read:movies'];
+const publicScopes = ['signin:auth', 'signup:auth', 'read:products'];
 
 const apiKeys = [
   {
